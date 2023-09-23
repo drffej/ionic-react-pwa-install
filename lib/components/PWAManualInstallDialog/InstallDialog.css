@@ -1,0 +1,12 @@
+.icon {
+    flex: 0 0 auto;
+    height: 25px;
+    margin-right: 0px;
+    width: 1.5em;
+    color: rgb(45, 124, 246);
+        max-height: 1.5em;
+        display: inline-block;
+        position: relative;
+        vertical-align: bottom;
+    
+} 
