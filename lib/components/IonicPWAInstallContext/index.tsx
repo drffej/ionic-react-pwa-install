@@ -17,8 +17,14 @@ type IonicPWAInstallInterface = {
   isInstalled: boolean;
   platform : string
   pwaInstall : () => Promise<boolean> | null
-  pwaManualInstall : () => void
+  pwaManualInstall : () => Promise<boolean> | null
 }
+
+type ReturnPromise = {
+  resolve: () => boolean; 
+  reject: () => boolean;
+}
+
 
 const IonicPWAInstallContext = React.createContext<IonicPWAInstallInterface|undefined>(undefined);
 
@@ -31,13 +37,20 @@ type Props = {
 export const IonicPWAInstallProvider : React.FC<Props> = ({children}) => {
 
   const [dialogState,setDialogState] = React.useState(false)
+  const awaitingPromiseRef = React.useRef<ReturnPromise>();
 
   function handleClose() {
     setDialogState(false);
+    if (awaitingPromiseRef.current) {
+      awaitingPromiseRef.current.resolve();
+    }
   }
 
-  const pwaManualInstall = () => {
+  const pwaManualInstall = (): Promise<boolean> => {
     setDialogState(true)
+    return new Promise<boolean>((resolve, reject) => {
+      awaitingPromiseRef.current = { resolve, reject };
+    });
   }
 
   const initialInstallState = {

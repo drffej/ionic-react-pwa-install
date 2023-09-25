@@ -32,7 +32,7 @@ $ npm i --save ionic-react-pwa-install
 1. Import `IonicPWAInstallProvider` and `useIonicPWAInstall`
 2. Wrap your App with the `IonicPWAInstallProvider`.
 3. `useIonicPWAInstall` returns the following interface:
-```typescript
+```javascript
 type IonicPWAInstallInterface = {
   isSupported: boolean;  // returns true if platform specific installer is supported
   isInstalled: boolean;  // returns true if application is running as an app windows
@@ -46,7 +46,7 @@ type IonicPWAInstallInterface = {
 4. Call `pwaInstall` or `pwaManualInstall`  depending on the value of `supported` and `isInstalled` .
 
 
-```typescript
+```javascript
 import { useIonicPWAInstall, IonicPWAInstallProvider}  from 'ionic-react-pwa-install'
 const App: React.FC = () => {
   
@@ -81,9 +81,9 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <React.StrictMode>
-    <IonicPWAInstallProvider>
+   <IonicPWAInstallProvider>
       <App />
-      </IonicPWAInstallProvider>
+   </IonicPWAInstallProvider>
   </React.StrictMode>
 );
 ```
