@@ -1,4 +1,4 @@
-import { isMobile, isAndroid, isFirefox, isIOS, isOpera, browserVersion } from "mobile-device-detect";
+import { isMobile, isAndroid, isFirefox, isIOS, isOpera, browserVersion, isSafari,isMacOs } from "mobile-device-detect";
 
 export type Platforms = {
   [key: string] : string
@@ -9,6 +9,7 @@ export const platforms = {
   FIREFOX_NEW: "firefox_new", // above version 79
   OPERA: "opera",
   IDEVICE: "idevice",
+  MACSAFARI: "macsafari",
   OTHER: "other", // don't know, so will do nothing
 };
 
@@ -24,7 +25,8 @@ export  function getPlatform() {
     platform = platforms.OPERA;
   } else if (isIOS && isMobile) {
     platform = platforms.IDEVICE;
+  } else if (isMacOs && isSafari && +browserVersion >= 17 ){
+    platform = platforms.MACSAFARI;
   }
-
   return platform;
 }

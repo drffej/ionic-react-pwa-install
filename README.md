@@ -1,4 +1,4 @@
-# ionic-react-pwa-install
+# Ionic React PWA Install
 
 [![npm package][npm-badge]][npm]
 ![npm][npm-downloads]
@@ -12,12 +12,15 @@ A number PWA helper packages have been developed to alleviate this situation and
 ## What this package does
 
 This package provides a simple way to add a installer for Ionic PWA applications.   It provides:
-- information if this applications naively support PWA installation and a interface to call the installer
-- information if manual installation is available and a interface to display instructions on how to do this
+- information if this applications natively supports a PWA installation
+- an interface function to call the installer or display instructions on how to do this.
 
-## Demo
 
-To view the demo visit - https ....
+## Demo and Example
+
+To view the demo visit - [https://ionic-react-pwa-demo.netlify.com](https://ionic-react-pwa-demo.netlify.com).
+
+To see the demo source code see - [https://github.com/drffej/ionic-react-pwa-install-demo](https://github.com/drffej/ionic-react-pwa-install-demo).
 
 ## Installation
 
@@ -37,13 +40,12 @@ type IonicPWAInstallInterface = {
   isSupported: boolean;  // returns true if platform specific installer is supported
   isInstalled: boolean;  // returns true if application is running as an app windows
   platform : string  // returns platform type one of 'native', 'other', 'firefox', 'idevice', 'opera'
-  pwaInstall : () => Promise<boolean> | null   // call the platform specific installer
-  pwaManualInstall : () => void // show the manual installation
+  pwaInstall : () => Promise<boolean> | null   // call the platform specific installer or display instructions
 }
 ```
 
 3. Use the `supported` and `isInstalled` ( from `useReactPWAInstall`) functions to determine whether to show the appropriate Install button (or banner,popup,etc...)
-4. Call `pwaInstall` or `pwaManualInstall`  depending on the value of `supported` and `isInstalled` .
+4. Call `pwaInstall`  depending on the value of `supported` and `isInstalled` .
 
 
 ```javascript
@@ -69,9 +71,6 @@ const App: React.FC = () => {
           
             <IonButton onClick={pwaInstall}>Install supported</IonButton>
           }
-          {!isSupported &&
-            <IonButton onClick={pwaManualInstall}>Manual Install</IonButton>
-          }
         </IonContent>
       </IonPage>
     </IonApp>
@@ -91,14 +90,13 @@ root.render(
 ## Interface Details
 
 - `IonicPWAInstallProvider`: Context provider, required. 
-- `useIonicPWAInstall`: React hook that provides `pwaInstall`, `iSupported`, `isInstalled`, `platform` and `pwaManualInstall`
+- `useIonicPWAInstall`: React hook that provides `pwaInstall`, `iSupported`, `isInstalled` and `platform`
 - `isSupported`: Helper to decide if the install button should be shown to the user. Returns true in 2 cases:
   - the [beforeinstallpromptevent] event is supported, and it has fired
   - manual installation is supported
 - `isInstalled`: Helper to decide if the install button should be shown to the user. Returns true if the user is currently visiting the site from the installed 'standalone' app.
 - `platform` : Help to decide what platform is being used
-- `pwaInstall`: Will open the installation dialog according to the user's platform. This function returns a promise. The promise is returns False if the user cancels the native installation process. The promise returns True when the native installation was successful.
-- `pwaManualInstall`: Will open instructions to show to how to manually install the PWA application
+- `pwaInstall`: Will open the installation dialog according to the user's platform. This function returns a promise. The promise is returns False if the user cancels the native installation process. The promise returns True when the native installation was successful.  For manual installs, it will open instructions to show to how to manually install the PWA application
 
 The following logic can be used to help decide what dialog box to call
 
@@ -106,7 +104,7 @@ The following logic can be used to help decide what dialog box to call
 :-------------|:--------------|:-----------|:------
 `TRUE`        | `FALSE`       | `native`   | Native installation available via `pwaInstall`.
 `TRUE`        | `TRUE`        | `native`    | Site running as standalone app, no action.
-`FALSE`       | `FALSE`       | `firefox` or `idevice` or `opera` | Manual installation available, display instructions via `pwaNativeInstall`. 
+`TRUE`       | `FALSE`       | `pwasafari`, `firefox` or `idevice` or `opera` | Manual installation available, display instructions via `pwaInstall`. 
 
 # Further Reading
 
@@ -118,7 +116,8 @@ For more information see [this guide] about how to promote PWA installation from
 A lot of the package ideas and some of the code is based on the `react-pwa-install` package.   See [https://github.com/zoltangy/react-pwa-install](https://github.com/zoltangy/react-pwa-install) for details.
 
 The main differences are:
-- Uses Typescript and Vite as the bundler
+- Uses Typescript
+- Uses Vite as the bundler
 - Use Ionic UI instead of material UI
 - Exposes the platform type
 

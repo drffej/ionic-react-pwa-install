@@ -1,6 +1,6 @@
 // taken and adapted from https://github.com/zoltangy/react-pwa-install
 import React from 'react'
-import { getPlatform } from "../Platforms";
+import { getPlatform, platforms} from "../Platforms";
 import {InstallDialog} from "../PWAManualInstallDialog/InstallDialog";
 
 function isInstalled() {
@@ -17,7 +17,6 @@ type IonicPWAInstallInterface = {
   isInstalled: boolean;
   platform : string
   pwaInstall : () => Promise<boolean> | null
-  pwaManualInstall : () => Promise<boolean> | null
 }
 
 type ReturnPromise = {
@@ -46,18 +45,15 @@ export const IonicPWAInstallProvider : React.FC<Props> = ({children}) => {
     }
   }
 
-  const pwaManualInstall = (): Promise<boolean> => {
+  const pwaManualInstall = async (): Promise<boolean> => {
     setDialogState(true)
-    return new Promise<boolean>((resolve, reject) => {
-      awaitingPromiseRef.current = { resolve, reject };
-    });
+    return true
   }
 
   const initialInstallState = {
-    isSupported : false,
+    isSupported : platform === platforms.OTHER ? false : true,
     isInstalled : isInstalled(),
-    pwaInstall : () => null,
-    pwaManualInstall: pwaManualInstall,
+    pwaInstall : pwaManualInstall,
     platform: platform
   }
 
@@ -89,7 +85,6 @@ export const IonicPWAInstallProvider : React.FC<Props> = ({children}) => {
         isSupported: true,
         isInstalled : isInstalled(),
         pwaInstall: pwaInstallNative,
-        pwaManualInstall: pwaManualInstall,
         platform: platform
       })
     }

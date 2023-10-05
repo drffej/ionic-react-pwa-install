@@ -26,8 +26,7 @@ setupIonicReact();
 import { useIonicPWAInstall}  from '../'
 const App: React.FC = () => {
   
-  const { isSupported, isInstalled, platform, pwaInstall, pwaManualInstall} = useIonicPWAInstall()!
-
+  const { isSupported, isInstalled, platform, pwaInstall} = useIonicPWAInstall()!
   return (
     <IonApp>
       <IonPage>
@@ -44,9 +43,6 @@ const App: React.FC = () => {
           {(isSupported && !isInstalled) &&
           
             <IonButton onClick={pwaInstall}>Install supported</IonButton>
-          }
-          {!isSupported &&
-            <IonButton onClick={pwaManualInstall}>Manual Install</IonButton>
           }
         </IonContent>
       </IonPage>

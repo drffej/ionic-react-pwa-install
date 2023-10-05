@@ -2,7 +2,7 @@
   "name": "ionic-react-pwa-install",
   "author": "Jeff Parker",
   "private": false,
-  "version": "0.0.6",
+  "version": "1.0.0",
   "type": "module",
   "main": "dist/main.js",
   "license": "MIT",
@@ -20,6 +20,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --p ./tsconfig-build.json && vite build",
+    "publish": "npm publish",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

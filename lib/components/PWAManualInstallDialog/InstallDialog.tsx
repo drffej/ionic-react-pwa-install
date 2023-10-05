@@ -3,7 +3,7 @@ import { IonModal, IonButton, IonIcon, IonContent, IonHeader, IonItem, IonLabel,
 import React from 'react';
 import { platforms } from "../Platforms"
 import { HomeIcon, FireFoxA2HSIcon, MenuIcon, OperaA2HSIcon } from "./Icons";
-import { shareOutline } from "ionicons/icons";
+import { shareOutline, browsersOutline } from "ionicons/icons";
 import './InstallDialog.css'
 
 type InstallDialogProps = {
@@ -17,7 +17,7 @@ export const InstallDialog : React.FC<InstallDialogProps> = (
   props : InstallDialogProps
   ) => {
   return (
-    <IonModal isOpen={props.isOpen}>
+    <IonModal isOpen={props.isOpen} backdropDismiss={false}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>{props.title}</IonTitle>
@@ -32,6 +32,17 @@ export const InstallDialog : React.FC<InstallDialogProps> = (
             }
             action2={<>then find and tap 'Add to Home screen      <HomeIcon />'</>}
             onClose={props.onClose}
+            platform={props.platform}
+          />
+        )}
+        {props.platform === platforms.MACSAFARI && (
+          <DialogActionWithInstructions
+            action1={
+              <>Tap the share <IonIcon className="icon" icon={shareOutline} item-left color="black"></IonIcon> button</>
+            }
+            action2={<>then find and tap '<IonIcon className="icon" icon={browsersOutline} color="black" item-left></IonIcon> Add to Dock'</>}
+            onClose={props.onClose}
+            platform={props.platform}
           />
         )}
         {props.platform === platforms.FIREFOX && (
@@ -44,6 +55,7 @@ export const InstallDialog : React.FC<InstallDialogProps> = (
             }
             action2={<>then tap '+Add to Home screen'</>}
             onClose={props.onClose}
+            platform={props.platform}
           />
         )}
         {props.platform === platforms.FIREFOX_NEW && (
@@ -56,6 +68,7 @@ export const InstallDialog : React.FC<InstallDialogProps> = (
             }
             action2={<>then tap 'Install'</>}
             onClose={props.onClose}
+            platform={props.platform}
           />
         )}
         {props.platform === platforms.OPERA && (
@@ -74,6 +87,7 @@ export const InstallDialog : React.FC<InstallDialogProps> = (
               </>
             }
             onClose={props.onClose}
+            platform={props.platform}
           />
         )}
         {props.platform === platforms.OTHER && (
@@ -100,6 +114,7 @@ type DialogActionWithInstructionsProps = {
   action1 : React.JSX.Element
   action2 : React.JSX.Element
   onClose : () => void
+  platform : string
 }
 
 
@@ -109,6 +124,7 @@ function DialogActionWithInstructions(props : DialogActionWithInstructionsProps 
       <IonItem key="instruction" lines="none">
         <IonLabel class="ion-text-wrap">
         This site can be installed as an application that will run in its own window.
+        { props.platform === platforms.MACSAFARI && <> <br />(If you have MacOS Sonoma installed).</> }
         </IonLabel>
       </IonItem>
       <IonItem key="instructions" lines="none">
